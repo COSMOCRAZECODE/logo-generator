@@ -75,22 +75,27 @@ if submitted:
     st.subheader("✨ Gemini-Generated Prompt:")
     st.markdown(f"```{logo_prompt}```")
 
-    with st.spinner("🎨 Generating logo with Stable Diffusion..."):
-        image_bytes = query_huggingface(logo_prompt)
+   with st.spinner("🎨 Generating logo with Stable Diffusion..."):
+      try:
+         image_bytes = query_huggingface(logo_prompt)
+         image = Image.open(BytesIO(image_bytes))
+         st.image(image, caption="Generated Logo", use_column_width=True)
 
-    try:
-        image = Image.open(BytesIO(image_bytes))
-        st.image(image, caption="Generated Logo", use_column_width=True)
+         buf = BytesIO()
+         image.save(buf, format="PNG")
+         st.download_button(
+               label="⬇️ Download Logo",
+               data=buf.getvalue(),
+               file_name=f"{company_name.lower().replace(' ', '_')}_logo.png",
+               mime="image/png",
+            )
 
-        buf = BytesIO()
-        image.save(buf, format="PNG")
-        st.download_button(
-            label="⬇️ Download Logo",
-            data=buf.getvalue(),
-            file_name=f"{company.lower().replace(' ', '_')}_logo.png",
-            mime="image/png",
-        )
-    except Exception as e:
-        st.error("❌ Error generating image. Please try again.")
-        st.text(str(e))
+      except Exception as e:
+            st.error("❌ Error generating image. Please try again.")
+            st.code(str(e))
+
+            # Check if the model is cold starting
+            if "loading" in str(e).lower() or "currently loading" in str(e).lower():
+                st.info("⏳ The Hugging Face model is warming up. Please wait 30–60 seconds and try again.")
+
 
