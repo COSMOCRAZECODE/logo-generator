@@ -11,7 +11,7 @@ GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
-gemini_model = genai.GenerativeModel("gemini-pro")
+gemini_model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
 
 # Hugging Face endpoint
 HF_API_URL = "https://api-inference.huggingface.co/models/thepowerfulde/logo-diffusion"
@@ -24,14 +24,21 @@ def query_huggingface(prompt):
 
 def generate_prompt(company, style, colors, mood):
     full_prompt = f"""
-Generate a creative prompt for a tech logo using the following details:
+    You are a branding expert and AI logo designer. Based on the following design brief, generate a unique logo concept and a clear image prompt for an AI image generation model like Stable Diffusion.
 
-Company Name: {company}
-Design Style: {style}
-Color Preferences: {colors}
-Mood or Theme: {mood}
+    Company Name: {company_name}
+    Industry: {industry}
+    Brand Values: {brand_values}
+    Target Audience: {target_audience}
+    Design Style: {design_style}
+    Color Palette and Meaning: {color_palette}
+    Typography: {typography}
+    Icon Type: {icon_type}
+    Mandatory Elements: {mandatory_elements}
+    Mood: {mood}
 
-The prompt should be clear, detailed, and suitable for AI-based logo generation.
+    1. Describe the logo concept clearly.
+    2. Then, write a detailed prompt in one line to generate the logo using an image model like Stable Diffusion.
     """
     response = gemini_model.generate_content(full_prompt)
     return response.text.strip()
@@ -42,15 +49,21 @@ st.title("🎨 AI-Powered Logo Generator")
 st.markdown("Generate stunning tech logos using **Gemini + Stable Diffusion**")
 
 with st.form("logo_form"):
-    company = st.text_input("Company Name")
-    style = st.text_input("Design Style", value="Minimalist, flat, vector")
-    colors = st.text_input("Color Preferences", value="Blues, greys, or gradients")
+    company_name = st.text_input("What's the name of your company?")
+    industry = st.text_input("What's your industry type?")
+    brand_values = st.text_input("What are your country's brand values?")
+    target_audience = st.text_input("What are your target audience?")
+    design_style = st.text_input("Design Style", value="Minimalist, flat, vector")
+    color_palette = st.text_input("Color Preferences", value="Blues, greys, or gradients")
+    typography = st.text_input("suggest some typography")
+    icon_type = st.text_input("What are the icon types you want?")
     mood = st.text_input("Mood/Theme", value="Futuristic, professional, techy")
+    mandatory_elements = st.text_input("What are some suggestions and mandatory elements you want?")
     submitted = st.form_submit_button("Generate Logo")
 
 if submitted:
     with st.spinner("🤖 Generating prompt using Gemini..."):
-        logo_prompt = generate_prompt(company, style, colors, mood)
+        logo_prompt = generate_prompt(company_name, industry, brand_values, target_audience, design_style, color_palette, typography, icon_type, mandatory_elements, mood)
 
     st.subheader("✨ Gemini-Generated Prompt:")
     st.markdown(f"```{logo_prompt}```")
