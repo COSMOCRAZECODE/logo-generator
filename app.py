@@ -63,7 +63,7 @@ st.markdown("Generate stunning tech logos using **Gemini + Stable Diffusion**")
 with st.form("logo_form"):
     company_name = st.text_input("What's the name of your company?")
     industry = st.text_input("What's your industry type?")
-    brand_values = st.text_input("What are your country's brand values?")
+    brand_values = st.text_input("What are your company's brand values?")
     target_audience = st.text_input("What are your target audience?")
     design_style = st.text_input("Design Style", value="Minimalist, flat, vector")
     color_palette = st.text_input("Color Preferences", value="Blues, greys, or gradients")
