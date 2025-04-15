@@ -84,7 +84,7 @@ if submitted:
        try:
           image_bytes = query_huggingface(logo_prompt)
           image = Image.open(BytesIO(image_bytes))
-          st.image(image, caption="Generated Logo", use_column_width=True)
+          st.image(image, caption="Generated Logo", use_container_width=True)
 
           buf = BytesIO()
           image.save(buf, format="PNG")
