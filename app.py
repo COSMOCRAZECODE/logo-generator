@@ -75,22 +75,22 @@ if submitted:
     st.subheader("✨ Gemini-Generated Prompt:")
     st.markdown(f"```{logo_prompt}```")
 
-   with st.spinner("🎨 Generating logo with Stable Diffusion..."):
-      try:
-         image_bytes = query_huggingface(logo_prompt)
-         image = Image.open(BytesIO(image_bytes))
-         st.image(image, caption="Generated Logo", use_column_width=True)
+    with st.spinner("🎨 Generating logo with Stable Diffusion..."):
+       try:
+          image_bytes = query_huggingface(logo_prompt)
+          image = Image.open(BytesIO(image_bytes))
+          st.image(image, caption="Generated Logo", use_column_width=True)
 
-         buf = BytesIO()
-         image.save(buf, format="PNG")
-         st.download_button(
-               label="⬇️ Download Logo",
-               data=buf.getvalue(),
-               file_name=f"{company_name.lower().replace(' ', '_')}_logo.png",
-               mime="image/png",
-            )
-
-      except Exception as e:
+          buf = BytesIO()
+          image.save(buf, format="PNG")
+          st.download_button(
+             label="⬇️ Download Logo",
+             data=buf.getvalue(),
+             file_name=f"{company_name.lower().replace(' ', '_')}_logo.png",
+             mime="image/png",
+          )
+          
+       except Exception as e:
             st.error("❌ Error generating image. Please try again.")
             st.code(str(e))
 
