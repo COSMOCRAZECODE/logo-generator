@@ -14,7 +14,7 @@ genai.configure(api_key=GEMINI_API_KEY)
 gemini_model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
 
 # Hugging Face endpoint
-HF_API_URL = "https://api-inference.huggingface.co/models/thepowerfulde/logo-diffusion"
+HF_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
 headers = {"Authorization": f"Bearer {HUGGINGFACE_TOKEN}"}
 
 def query_huggingface(prompt):
