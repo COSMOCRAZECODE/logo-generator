@@ -22,7 +22,7 @@ def query_huggingface(prompt):
     response = requests.post(HF_API_URL, headers=headers, json=payload)
     return response.content
 
-def generate_prompt(company, style, colors, mood):
+def generate_prompt(company_name, industry, brand_values, target_audience, design_style, color_palette, typography, icon_type, mandatory_elements, mood):
     full_prompt = f"""
     You are a branding expert and AI logo designer. Based on the following design brief, generate a unique logo concept and a clear image prompt for an AI image generation model like Stable Diffusion.
 
