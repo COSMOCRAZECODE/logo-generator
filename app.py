@@ -18,15 +18,20 @@ HF_API_URL = "https://api-inference.huggingface.co/models/thepowerfulde/logo-dif
 headers = {"Authorization": f"Bearer {HUGGINGFACE_TOKEN}"}
 
 def query_huggingface(prompt):
-   def query_huggingface(prompt):
     payload = {"inputs": prompt}
     response = requests.post(HF_API_URL, headers=headers, json=payload)
+
+    content_type = response.headers.get("Content-Type", "")
     
-    # Check if it's JSON (likely an error or loading)
-    if "application/json" in response.headers["Content-Type"]:
+    # If it's JSON, likely an error or loading message
+    if "application/json" in content_type:
         err_json = response.json()
         raise ValueError(err_json.get("error", "Unknown error from Hugging Face API"))
     
+    # If it's not an image, raise error
+    if not content_type.startswith("image/"):
+        raise ValueError(f"Expected image response but got {content_type}")
+
     return response.content
 
 def generate_prompt(company_name, industry, brand_values, target_audience, design_style, color_palette, typography, icon_type, mandatory_elements, mood):
